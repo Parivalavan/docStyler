@@ -1,0 +1,19 @@
+{
+  "name": "docstyler",
+  "version": "1.0.0",
+  "description": "style document in html",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "html",
+    "document",
+    "style"
+  ],
+  "author": "Parivalavan Manoharan",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.1.3"
+  }
+}

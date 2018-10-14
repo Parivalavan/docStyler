@@ -1,0 +1,54 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="public/js/jquery-3.1.0.min.js"></script>
+	<link rel="stylesheet" href="public/css/docstyler/style.css" />
+</head>
+
+<body>
+	<div id="docHeader"></div>
+	<div id="styler">
+		<div class="row">
+			<div id="sourceContainer" class="col-sm col-sm-9 containers">source</div>
+			<div id="rightSidebar" class="col-sm col-sm-3">
+				<div class="row">
+					<div class="col-sm-6 tabsHead active" data-tabs="stylePalette">Style Palette</div>
+					<div class="col-sm-6 tabsHead" data-tabs="changeHistory">Change History</div>
+				</div>
+				<div class="row">
+					<div id="stylePaletteContainer" class="col-sm-12 stylePalette tabsBody active" data-type="block">
+						<div id="stylePaletteHead" class="stylePaletteHead row">
+							<div class="col-sm-6 styleType" data-type="block">Paragraph Styles</div>
+							<div class="col-sm-6 styleType" data-type="inline">Character Styles</div>
+						</div>
+						<div class="row">
+							<div id="stylePalette" class="stylePaletteBody col-sm-12">Style Palette</div>
+						</div>
+					</div>
+					<div id="changeHistory" class="changeHistory tabsBody">Change History</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="docFooter"></div>
+	<!-- Custom scripts required by this view -->
+	<div class="la-container">
+		<div class="la-line-scale">
+			<div> </div>
+			<div> </div>
+			<div> </div>
+			<div> </div>
+			<div> </div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="public/js/styler/styler.js"></script>
+<script type="text/javascript" src="public/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="public/js/rangy/lib/rangy-core.js"></script>
+<script type="text/javascript" src="public/js/rangy/lib/rangy-serializer.js"></script>
+<script type="text/javascript" src="public/js/rangy/lib/rangy-selectionsaverestore.js"></script>
+<script type="text/javascript" src="public/js/rangy/lib/rangy-textrange.js"></script>
+<script type="text/javascript" src="public/js/docstyler/main.js"></script>
+
+</html>

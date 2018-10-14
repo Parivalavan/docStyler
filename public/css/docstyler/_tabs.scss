@@ -1,0 +1,101 @@
+.tabsHead {
+    background: #e2e2e2;
+    border-bottom: 1px solid #b3b3b3;
+    cursor: pointer;
+    text-align: center;
+    padding: 0.8rem;
+    &.active {
+        background: #cecece;
+    }
+    &:last-child {
+        border-right: 1px solid #b3b3b3;
+    }
+}
+
+.tabsHead+.tabsHead {
+    border-left: 1px solid #b3b3b3;
+}
+
+.tabsBody {
+    display: none;
+    &.active {
+        display: block !important;
+    }
+}
+
+#stylePaletteContainer {
+    #stylePaletteHead {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        div[data-type] {
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            &:hover{
+                color: $color-blue;
+            }
+        }
+    }
+}
+
+#stylePaletteContainer[data-type="block"] {
+    #stylePaletteHead {
+        margin-bottom: 0.5rem;
+        div[data-type="block"] {
+            border-bottom-color: $color-blue;
+            color: $color-blue;
+        }
+    }
+    #stylePalette {
+        *:not([data-type='block']) {
+            display: none !important;
+        }
+    }
+}
+
+#stylePaletteContainer[data-type="inline"] {
+    #stylePaletteHead {
+        div[data-type="inline"] {
+            border-bottom-color: $color-blue;
+            color: $color-blue;
+            font-weight: bold;
+        }
+    }
+    #stylePalette {
+        *:not([data-type='inline']) {
+            display: none !important;
+        }
+    }
+}
+
+#stylePaletteContainer[data-type="link"] {
+    #stylePaletteHead {
+        div[data-type="link"] {
+            border-bottom-color: $color-blue;
+            color: $color-blue;
+            font-weight: bold;
+        }
+    }
+    #stylePalette {
+        *:not([data-type='link']) {
+            display: none !important;
+            color: inherit;
+        }
+    }
+}
+
+#stylePaletteHead {
+    .styleType {
+        min-height: 20px;
+        padding: 10px 0;
+        text-align: center;
+    }
+}
+
+#stylePalette {
+    .styleName {
+        cursor: pointer;
+        &:hover{
+            color: $color-blue;
+        }
+    }
+}

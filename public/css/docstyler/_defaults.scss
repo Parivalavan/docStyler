@@ -1,0 +1,42 @@
+$color-blue: #007bff;
+
+
+body, * {
+	font-size: 12px;
+	overflow:  hidden;
+}
+
+#styler{
+    height: 100%;
+    overflow: hidden;
+
+	.row {
+		//padding-right: 1%;
+		.containers{
+			height: 400px;
+			overflow-y: scroll;
+			padding-left: 10%;
+
+			> *:not(div)::before{
+				content: 'NOT STYLED';
+				color: red;
+				position: absolute;
+				left: 0px;
+				padding-left: 2%;
+				font-size: 1rem;
+				text-indent: 0in !important;
+			}
+			> *:not(div)[class]::before{
+				content: attr(class);
+			}
+			> *:not(div)[data-name]::before{
+				content: attr(data-name);
+				color: gray !important;
+			}
+		}
+	}
+}
+
+#rightSidebar {
+    border-left: 1px solid #b3b3b3;
+}
