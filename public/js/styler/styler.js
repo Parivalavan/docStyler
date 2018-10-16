@@ -3,12 +3,18 @@ var styler = function () {
 	var settings = {
 		init: false,
 		styleFile: './styleTemplate.jrnl.html',
-		selRange: ''
+		selRange: '',
+		msgFile: './messages/en.json',
+		patternFile: './patterns/en.json',
+		msg: {},
+		pattern: {}
 	};
 	var initialize = function (params) {
 		var sourceContainer = params.sourceContainer;
 		var stylePalette = params.stylePalette;
 		var styleFile = params.styleFile ? params.styleFile : settings.styleFile;
+		var msgFile = params.msgFile ? params.msgFile : settings.msgFile;
+		var patternFile = params.patternFile ? params.patternFile : settings.patternFile;
 		if (typeof (rangy) != 'object') {
 			alert('Please load "rangy" library');
 			return false;
@@ -35,6 +41,16 @@ var styler = function () {
 			alert('Failed to load style file. Please check if the file exists and readable');
 			return false;
 		}
+		var msgStatus = styler.loadData(msgFile, '', true);
+		if ((msgStatus.status != 200) || (!msgStatus.responseJSON)) {
+			alert('Failed to load message file. Please check if the file exists and readable');
+			return false;
+		}
+		settings.msg = msgStatus.responseJSON;
+		var patternStatus = styler.loadData(patternFile, '', true);
+		if ((patternStatus.status == 200) && (patternStatus.responseJSON)) {
+			settings.pattern = patternStatus.responseJSON;
+		}
 		// tabindex attribute is important to capture the keydown event. if not present add one
 		if (!sourceContainer.attr('tabindex')) {
 			sourceContainer.attr('tabindex', 1000);
@@ -43,10 +59,6 @@ var styler = function () {
 		styler.initEvent(sourceContainer, stylePalette);
 		$('.la-container').css('display', 'none');
 		settings.init = true;
-	};
-
-	var get = function (key) {
-		return settings[key];
 	};
 
 	var get = function (key) {
@@ -122,7 +134,7 @@ var styler = function () {
 					"styleName": styleName.replace(/^[\s\t\r\n]+|[\s\t\r\n]+$/g, ''),
 					"styleCount": $(e.target).attr('data-count') ? $(e.target).attr('data-count') : -1, // if a style can be applied only once, then restrict
 					"parentClass": $(e.target).attr('data-parent'),
-					"keepStyling": $(e.target).attr('data-next') ? 4 : 0
+					"keepStyling": $(e.target).attr('data-next') ? 10 : 0
 				}
 
 				if ($(e.target).attr('data-type') == 'block') {
@@ -146,7 +158,7 @@ var styler = function () {
 			type: 'GET',
 			async: sync,
 			success: function (data) {
-				$(container).html(data);
+				if ($(container)) $(container).html(data);
 			},
 			error: function (error) {
 			}
@@ -174,7 +186,8 @@ var styler = function () {
 				}
 			});
 		}
-		var blockNodesLen = styler.getBlockNodes().length;
+		var blockNodes = styler.getBlockNodes();
+		var blockNodesLen = blockNodes.length;
 		console.log('selection changed', type, blockNodesLen, currSel.toString());
 		// if the selection contains multiple blocks then do not allow/show character styles/link styles
 		$('#stylePaletteHead').removeAttr('data-selection-type');
@@ -187,6 +200,16 @@ var styler = function () {
 		}
 		// if there is some text selected, the show/allow character or link styles
 		else if (currSel.toString() != '') {
+			var blockNode = blockNodes[0]
+			$('#stylePaletteContainer').find('style').remove();
+			var className = $(blockNode).attr('class');
+			if (/\bjrnl[A-z]+\b/g.test(className)){
+				$('#stylePaletteContainer').append('<style>#stylePaletteContainer[data-type="inline"] #stylePalette *[data-parent]:not([data-parent="jrnlAff"]){display: none;}</style>');
+			}
+			else {
+				$('#stylePaletteContainer').append('<style>#stylePaletteContainer[data-type="inline"] #stylePalette *[data-type="inline"]{display: none;}</style>');
+			}
+
 			$('#stylePaletteContainer').attr('data-type', 'inline');
 			$('#stylePaletteHead').attr('data-selection-type', 'inline');
 		}
@@ -298,6 +321,19 @@ var styler = function () {
 		});
 	};
 
+	styler.getMessage = function (msgID, msgParams) {
+		try {
+			var msgText = styler.get('msg')[msgID];
+			Object.keys(msgParams).forEach(key => {
+				msgText = msgText.replace('{' + key + '}', msgParams[key]);
+			});
+			return msgText;
+
+		} catch (error) {
+			return 'Unable to fetch a correct message for ID ' + msgID + '!!!';
+		}
+	};
+
 	styler.applyParaStyle = function (param) {
 		console.log(currSel);
 		var tagName = param.tagName;
@@ -316,18 +352,31 @@ var styler = function () {
 		if (styleCount != -1 && parentClass && selectedNodes.length > 0) {
 			var parentNode = selectedNodes[0].closest('.' + parentClass);
 			if (parentNode && parentNode.find('.' + className).length >= styleCount) {
-				alert('`' + styleName + '` can be applied only ' + styleCount + ' time(s)');
+				alert (styler.getMessage("m0001", {
+					"styleName": styleName,
+					"styleCount": styleCount
+				}));
+				return false;
 			}
 			else {
 				var sourceContainer = styler.get('sourceContainer');
 				if ($(sourceContainer).find('.' + className).length >= styleCount) {
-					alert('`' + styleName + '` can be applied only ' + styleCount + ' time(s)');
+					alert (styler.getMessage("m0001", {
+						"styleName": styleName,
+						"styleCount": styleCount
+					}));
 					return false;
 				}
 			}
 		}
 
 		var currNodeStyleValue = $(selectedNodes[0]).attr('style');
+		var testUsingPattern = false;
+		var patternObj = styler.get('pattern')[className];
+		if (patternObj) {
+			var regexPattern = new RegExp(patternObj.pattern, patternObj.flag);
+			testUsingPattern = regexPattern.test($(selectedNodes[0]).text());
+		}
 
 		selectedNodes = styler.renameNode(selectedNodes, tagName, className, styleName);
 		styler.checkUntagged(selectedNodes);
@@ -347,16 +396,33 @@ var styler = function () {
 				var nextNode = $(selectedNodes[0]).next();
 				if (nextNode) {
 					var nextNodeStyleValue = $(nextNode).attr('style');
-					if (!nextNodeStyleValue){
+					if (!nextNodeStyleValue) {
 						param.keepStyling = 0;
 					}
-					else if (currNodeStyleValue == nextNodeStyleValue) {
+					// if the actual node styled node passes regex test and the next node also passes the regex text,
+					// then they are similar nodes, style it
+					else if (testUsingPattern && regexPattern.test($(nextNode).text())) {
 						var range = rangy.createRange();
 						range.selectNode($(nextNode)[0]);
 						rangy.getSelection().setSingleRange(range);
 						currSel = rangy.getSelection();
 						param.keepStyling--;
 						styler.applyParaStyle(param);
+					}
+					else if (currNodeStyleValue == nextNodeStyleValue) {
+						// if regex pattern is present, and the acutal node passes the regex pattern test
+						// if the nextNode text does not pass the test, then do not style
+						if (testUsingPattern && !regexPattern.test($(nextNode).text())) {
+							param.keepStyling = 0;
+						}
+						else {
+							var range = rangy.createRange();
+							range.selectNode($(nextNode)[0]);
+							rangy.getSelection().setSingleRange(range);
+							currSel = rangy.getSelection();
+							param.keepStyling--;
+							styler.applyParaStyle(param);
+						}
 					}
 					else {
 						param.keepStyling = 0;

@@ -36,7 +36,9 @@ window.onload = function () {
     var params = {
         'sourceContainer': sourceContainer,
         'stylePalette': $('#stylePaletteContainer'),
-        'styleFile': 'public/js/styler/styleTemplate.jrnl.html'
+        'styleFile': 'public/js/styler/styleTemplate.jrnl.html',
+        'msgFile': 'public/js/styler/messages/en.json',
+        'patternFile': 'public/js/styler/patterns/en.json'
     }
     styler.init(params);
     updateHeight(sourceContainer);
