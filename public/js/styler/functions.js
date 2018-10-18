@@ -1,7 +1,7 @@
 var functions = function () {
-
-    return {
-        init: initialize,
-        get: get
-    };
+    return {};
 }();
+
+(function (functions) {
+	return functions;
+})(functions || {});
