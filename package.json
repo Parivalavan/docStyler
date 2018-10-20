@@ -14,6 +14,7 @@
   "author": "Parivalavan Manoharan",
   "license": "MIT",
   "dependencies": {
-    "bootstrap": "^4.1.3"
+    "bootstrap": "^4.1.3",
+    "node-sass": "^4.9.4"
   }
 }

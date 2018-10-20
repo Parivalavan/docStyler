@@ -170,6 +170,10 @@ var styler = function () {
 (function (styler) {
 	var currSel = 0;
 
+	styler.showSideMenu = function(){
+
+	};
+
 	styler.onSelectionChanged = function (eventName, type) {
 		if (!styler.get('init')) {
 			alert('Please initialize styler');
@@ -187,16 +191,20 @@ var styler = function () {
 			});
 		}
 		var blockNodes = styler.getBlockNodes();
+		$('[data-active]').removeAttr('data-active');
+		$(blockNodes).attr('data-active', 'true'); //this attribute will show the active elements
 		var blockNodesLen = blockNodes.length;
 		console.log('selection changed', type, blockNodesLen, currSel.toString());
 		// if the selection contains multiple blocks then do not allow/show character styles/link styles
 		$('#stylePaletteHead').removeAttr('data-selection-type');
 		if (blockNodesLen > 1) {
 			$('#stylePaletteHead').attr('data-selection-type', 'multiple');
+			sidemenu.init(blockNodes[0]);
 		}
-		if ((blockNodesLen == 1) && (currSel.toString() == '')) {
+		else if ((blockNodesLen == 1) && (currSel.toString() == '')) {
 			$('#stylePaletteContainer').attr('data-type', 'block');
 			$('#stylePaletteHead').attr('data-selection-type', 'block');
+			sidemenu.init(blockNodes[0]);
 		}
 		// if there is some text selected, the show/allow character or link styles
 		else if (currSel.toString() != '') {

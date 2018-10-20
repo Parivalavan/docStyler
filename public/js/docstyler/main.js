@@ -4,7 +4,7 @@ function uuidv4() {
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     )
 }
-
+//TODO: test
 function getSelectedNodes() {
     var selectedNodes = [];
     var sel = rangy.getSelection();

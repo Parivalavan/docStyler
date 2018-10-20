@@ -1,0 +1,62 @@
+
+Change History:
+  ☐ Item 1
+Side Menu:
+  ☐ show a side menu just like the Zoho writer blurred
+  ☐ on focus brighten
+  ☐ on click show menu options
+  ☐ call specific functions on clicking menu items
+Insert Para:
+  ☐ Before
+  ☐ After
+Edit Para:
+  ☐ Focus out remove editable
+  ☐ Edit option on left of current para
+  ☐ add to change history
+UUID:
+  ☐ Add UUID to all block level nodes on load
+Merge Selected:
+  ☐ if multiple blocks are selected merge them into one
+  ☐ add to change history
+Style:
+  ☐ When a selection is selected and it is at the beginning of a block node, then create separate block node
+  ☐ ability to style lists
+  ☐ automatic identification
+  ☐ style using regex option
+Callback Functions:
+  ☐ after applying specific styles run pre-configured functions to perform specific actions on the styled node
+CSS Preview:
+  ☐ inline elements to get colors/background to identify if they are tagged
+  ☐ Toggle to view the css for block level elements. Default the css will not make a difference. When toggled a special class is added to the root to visualise the change
+Linking:
+  ☐ When an object is styled, for example, figure caption, its corresponding citations should be linked, meaning id added
+  ☐ When a citation is styled, then it has to be linked to the corresponding block
+  ☐ if orphans, then need to add query
+Undo/Redo:
+  ☐ undo/redo the changes
+  ☐ should reflect the change history as well
+
+
+Editor:
+  ☐ Editable section
+  ☐ ability to insert/modify citations
+  ☐ ability to insert float blocks
+    ☐ references
+    ☐ endnotes
+    ☐ footnotes
+    ☐ figures
+    ☐ tables
+    ☐ boxes
+    ☐ schemas
+    ☐ images
+    ☐ charts
+    ☐ etc.
+  ☐ style elements
+  ☐ group elements
+  ☐ ability to cite objects
+  ☐ upload/replace images
+  ☐ change history/tracking
+
+Table Typesetting:
+  ☐ UI
+

@@ -37,6 +37,12 @@ body, * {
 	}
 }
 
+#sourceContainer{
+	> * {
+		text-indent: 0 !important;
+	}
+}
+
 #rightSidebar {
     border-left: 1px solid #b3b3b3;
 }
